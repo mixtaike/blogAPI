@@ -8,7 +8,7 @@ import com.springboot.blog.dtos.PostResponse;
 public interface PostService {
 	PostDTO createPost(PostDTO postDto);
 	
-	PostResponse getAllPosts(int pageNo, int pageSize);
+	PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir);
 	
 	PostDTO getPostById(long id);
 	
@@ -16,4 +16,3 @@ public interface PostService {
 	
 	void deletePostById(long id);
 }
-
