@@ -1,6 +1,5 @@
 package com.springboot.blog.service;
 
-import java.util.List;
 
 import com.springboot.blog.dtos.PostDTO;
 import com.springboot.blog.dtos.PostResponse;
