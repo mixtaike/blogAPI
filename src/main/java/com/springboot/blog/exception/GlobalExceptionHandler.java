@@ -21,13 +21,26 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(ResourceNotFoundException.class)//anotação usada para tratar uma exceção especifica
 	public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException exception, WebRequest webRequest){
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(), webRequest.getDescription(false));
+		exception.printStackTrace();
 		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler(BlogAPIException.class)//anotação usada para tratar uma exceção especifica
 	public ResponseEntity<ErrorDetails> handleBlogAPIException(BlogAPIException exception, WebRequest webRequest){
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(), webRequest.getDescription(false));
-		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+		exception.printStackTrace();
+		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
+	
+	//global exception
+	
+	@ExceptionHandler(Exception.class)//anotação usada para tratar uma exceção especifica
+	public ResponseEntity<ErrorDetails> handleGlobalException(Exception exception, WebRequest webRequest){
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(), webRequest.getDescription(false));
+		exception.printStackTrace();
+		return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	
 
 }
