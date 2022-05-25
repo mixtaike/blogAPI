@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +35,7 @@ public class PostoController {
 
 	
 	// create blog post api
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDTO) {
 		
@@ -61,14 +62,14 @@ public class PostoController {
 	}
 	
 	//update post by id rest apoi
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("{id}")
 	public ResponseEntity<PostDTO> updatePost(@Valid @RequestBody PostDTO postDTO, @PathVariable int id ) {
 		PostDTO postResponse=  postService.updatePost(postDTO, id);
 		return new ResponseEntity<> (postResponse, HttpStatus.OK);
 	
 	}
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	//delete post rest api
 	@DeleteMapping("{id}")
     public ResponseEntity<String> deletePost(@PathVariable int id){
