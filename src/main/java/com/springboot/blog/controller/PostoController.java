@@ -1,7 +1,6 @@
 package com.springboot.blog.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 import javax.validation.Valid;
 
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.blog.dtos.PostDTO;
-import com.springboot.blog.dtos.PostDTOV2;
 import com.springboot.blog.dtos.PostResponse;
 import com.springboot.blog.service.PostService;
 import com.springboot.blog.utils.AppConstants;
@@ -58,26 +56,12 @@ public class PostoController {
 	
 	//get post by id 
 	
-	@GetMapping(value = "/api/posts/{id}", produces = "application/vnd.juliablogapi.v1+json" )
+	@GetMapping(value = "api/v1/posts/{id}")
 	public ResponseEntity<PostDTO> getPostByIdV1(@PathVariable Long id) {
 		return ResponseEntity.ok(postService.getPostById(id));
 	}
 	
-	@GetMapping(value = "/api/posts/{id}",produces = "application/vnd.juliablogapi.v2+json")
-	public ResponseEntity<PostDTOV2> getPostByIdV2(@PathVariable Long id) {
-		PostDTO postDTO = postService.getPostById(id);
-		PostDTOV2 postDtov2 = new PostDTOV2();
-		postDtov2.setId(postDTO.getId());
-		postDtov2.setTitle(postDTO.getTitle());
-		postDtov2.setDescription(postDTO.getDescription());
-		postDtov2.setContent(postDTO.getContent());
-		List<String> tags = new ArrayList<>();
-		tags.add("Java");
-		tags.add("Spring boot");
-		tags.add("AWS");
-		postDtov2.setTags(tags);
-		return ResponseEntity.ok(postDtov2);
-	}
+
 	
 	//update post by id rest apoi
 	@PreAuthorize("hasRole('ADMIN')")
