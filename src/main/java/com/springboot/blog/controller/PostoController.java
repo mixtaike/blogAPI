@@ -1,5 +1,6 @@
 package com.springboot.blog.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -18,12 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.blog.dtos.PostDTO;
+import com.springboot.blog.dtos.PostDTOV2;
 import com.springboot.blog.dtos.PostResponse;
 import com.springboot.blog.service.PostService;
 import com.springboot.blog.utils.AppConstants;
 
 @RestController
-@RequestMapping("api/posts")
+@RequestMapping()
 public class PostoController {
 	
 	private PostService postService;
@@ -44,7 +46,7 @@ public class PostoController {
 	
 	//get all posts rest api
 	
-	@GetMapping
+	@GetMapping("api/v1/posts")
 	public PostResponse getAllPosts(
 			@RequestParam(value="pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false)int pageNo, 
 			@RequestParam(value = "pageSize", defaultValue =AppConstants.DEFAULT_PAGE_SIZES, required = false) int pageSize,
@@ -56,14 +58,30 @@ public class PostoController {
 	
 	//get post by id 
 	
-	@GetMapping("{id}")
-	public ResponseEntity<PostDTO> getPostById(@PathVariable Long id) {
+	@GetMapping("api/v1/posts/{id}")
+	public ResponseEntity<PostDTO> getPostByIdV1(@PathVariable Long id) {
 		return ResponseEntity.ok(postService.getPostById(id));
+	}
+	
+	@GetMapping("api/v2/posts/{id}")
+	public ResponseEntity<PostDTOV2> getPostByIdV2(@PathVariable Long id) {
+		PostDTO postDTO = postService.getPostById(id);
+		PostDTOV2 postDtov2 = new PostDTOV2();
+		postDtov2.setId(postDTO.getId());
+		postDtov2.setTitle(postDTO.getTitle());
+		postDtov2.setDescription(postDTO.getDescription());
+		postDtov2.setContent(postDTO.getContent());
+		List<String> tags = new ArrayList<>();
+		tags.add("Java");
+		tags.add("Spring boot");
+		tags.add("AWS");
+		postDtov2.setTags(tags);
+		return ResponseEntity.ok(postDtov2);
 	}
 	
 	//update post by id rest apoi
 	@PreAuthorize("hasRole('ADMIN')")
-	@PutMapping("{id}")
+	@PutMapping("api/v1/posts/{id}")
 	public ResponseEntity<PostDTO> updatePost(@Valid @RequestBody PostDTO postDTO, @PathVariable int id ) {
 		PostDTO postResponse=  postService.updatePost(postDTO, id);
 		return new ResponseEntity<> (postResponse, HttpStatus.OK);
@@ -71,7 +89,7 @@ public class PostoController {
 	}
 	@PreAuthorize("hasRole('ADMIN')")
 	//delete post rest api
-	@DeleteMapping("{id}")
+	@DeleteMapping("api/v1/posts/{id}")
     public ResponseEntity<String> deletePost(@PathVariable int id){
 
         postService.deletePostById(id);
