@@ -54,7 +54,7 @@ public class SecurityConfig {
 	            .authorizeHttpRequests()
 	            .antMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
 	            .antMatchers("/api/v1/auth/**").permitAll()
-	            .antMatchers("/v3/api-docs/**").permitAll()
+	            .antMatchers("/v2/api-docs/**").permitAll()
 	            .antMatchers("/swagger-ui/**").permitAll()
 	            .antMatchers("/swagger-resources/**").permitAll()
 	            .antMatchers("/swagger-ui.html").permitAll()
@@ -62,7 +62,9 @@ public class SecurityConfig {
 	            .anyRequest()
 	            .authenticated();
 	           	http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-	           	return http.build();
+	          
+	           return 	           http.build();
+
 
 	  }
 		
@@ -79,4 +81,3 @@ public class SecurityConfig {
 	}
 	
 }
-
